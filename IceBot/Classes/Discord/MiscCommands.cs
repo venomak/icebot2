@@ -58,7 +58,7 @@ namespace IceBot.Classes.Discord
 
             //builder.AddField("Client", clientStatus, true);
             builder.AddField("Community", communityStatus, true);
-            builder.AddField("Store", storeStatus, true);
+            builder.AddField("Store ", storeStatus, true);
 
             builder.AddField("======", " ");
 
