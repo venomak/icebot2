@@ -16,10 +16,9 @@ namespace IceBot
 
         static async Task MainAsync(string[] args)
         {
-
             await DiscordMain.DiscordInit();
 
-            
+            await Classes.Sound.InsertSounds();
 
             await Task.Delay(-1);
         }

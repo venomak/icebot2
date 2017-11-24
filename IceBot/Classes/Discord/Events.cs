@@ -1,11 +1,14 @@
 ﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-
+using IceBot.Classes.Discord;
 
 namespace IceBot.Classes.Discord
 {
@@ -90,7 +93,7 @@ namespace IceBot.Classes.Discord
 
         public static async Task PresenceUpdated(PresenceUpdateEventArgs args)
         {
-            DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", "Presence Updated", DateTime.Now);
+            DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", $"Presence Updated -- {args.Member.Nickname} -- {args.PresenceBefore} -- {args.Status}", DateTime.Now);
 
             await Task.Delay(0);
         }
@@ -119,17 +122,28 @@ namespace IceBot.Classes.Discord
 
         public static async Task VoiceServerUpdated(VoiceServerUpdateEventArgs args)
         {
-            DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", "Voice Server Updated", DateTime.Now);
+           // DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", $"Voice Server Updated -- {args.Endpoint}", DateTime.Now);
 
             await Task.Delay(0);
         }
 
         public static async Task VoiceStateUpdated(VoiceStateUpdateEventArgs args)
         {
-            DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", "Voice State Updated", DateTime.Now);
+            DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", $"Voice State Updated --", DateTime.Now);
 
             await Task.Delay(0);
         }
-        
+
+        //public static async Task CommandExecuted(CommandExecutionEventArgs args)
+        //{
+
+        //}
+
+        //public static async Task CommandErrored(CommandExecutionEventArgs args)
+        //{
+
+
+        //}
+
     }
 }

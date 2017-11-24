@@ -18,7 +18,7 @@ namespace IceBot.Classes.Discord
         public static CommandsNextModule discCmds;
         public static InteractivityModule discInter;
         public static VoiceNextClient discVoice;
-
+        public static DebugLogger Logger;
 
         public static async Task DiscordInit()
         {
@@ -28,8 +28,12 @@ namespace IceBot.Classes.Discord
                 Token = "MjgwNDk5MDI2NjI4MDUwOTQ2.DPiKFw.cAR1XJu4dEXPeNMhYb9ZJcpL9eQ",
                 TokenType = TokenType.Bot,
                 LogLevel = LogLevel.Info,
+                DateTimeFormat = "MM-dd-yyyy hh:mm:ss",
                 UseInternalLogHandler = true
             });
+
+            //Easier logging path
+            Logger = discCl.DebugLogger;
 
             discCl.GuildMemberAdded += Events.GuildMemberAdded;
             discCl.GuildMemberRemoved += Events.GuildMemberRemoved;
@@ -64,8 +68,13 @@ namespace IceBot.Classes.Discord
                 EnableDms = false
             });
 
+            //discCmds.CommandExecuted += Events.CommandExecuted;
+            //discCmds.CommandErrored += Events.CommandErrored;
+
             discCmds.RegisterCommands<Commands>();
-            discCmds.RegisterCommands<MiscCommands>();
+            discCmds.RegisterCommands<SoundCommands>();
+            discCmds.RegisterCommands<ExampleExecutableGroup>();
+            discCmds.RegisterCommands<ExampleGrouppedCommands>();
 
             discInter = discCl.UseInteractivity(new InteractivityConfiguration());
 
@@ -77,7 +86,5 @@ namespace IceBot.Classes.Discord
             await discCl.ConnectAsync();
 
         }
-
-
     }
 }
