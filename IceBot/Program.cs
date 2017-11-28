@@ -11,6 +11,10 @@ namespace IceBot
 
         static void Main(string[] args)
         {
+
+            Console.Title = "IceBot";
+
+
             MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 

@@ -122,7 +122,7 @@ namespace IceBot.Classes.Discord
 
         public static async Task VoiceServerUpdated(VoiceServerUpdateEventArgs args)
         {
-           // DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", $"Voice Server Updated -- {args.Endpoint}", DateTime.Now);
+           DiscordMain.discCl.DebugLogger.LogMessage(LogLevel.Info, "DISCORD", $"Voice Server Updated --", DateTime.Now);
 
             await Task.Delay(0);
         }

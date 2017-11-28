@@ -31,11 +31,20 @@ namespace IceBot.Classes.Discord
             await ctx.RespondAsync(listSounds);
         }
 
+        [Command("nlist"), Aliases("nl")]
+        [Description("Shows a list of sounds.")]
+        public async Task NewListSounds(CommandContext ctx, [RemainingText]string text = "")
+        {
+            await SoundFuncs.newSoundListFunc(ctx);
+
+            await Task.Delay(0);
+        }
+
         [Command("play")]
         [Description("Play a sound.")]
         public async Task PlaySound(CommandContext ctx, [RemainingText]string text = "")
         {
-            await SoundFuncs.soundPlayFunc(ctx);
+            await SoundFuncs.soundPlayFunc(ctx, true);
 
             await Task.Delay(0);
         }

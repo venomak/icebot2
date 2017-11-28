@@ -10,6 +10,7 @@ using DSharpPlus.VoiceNext;
 using DSharpPlus.Entities;
 
 using System.Timers;
+using System.Text;
 
 namespace IceBot.Classes
 {
@@ -262,7 +263,7 @@ namespace IceBot.Classes
 			return dir;
 		}
 
-		public string stripSoundDir(string cat)
+		public static string stripSoundDir(string cat)
 		{
 			cat = cat.Replace(" ", "_");
 			cat = cat.ToLower();
@@ -594,7 +595,7 @@ namespace IceBot.Classes
 					{
 
 						sort.Add(str["snd_aliases"].ToString(), i);
-
+                        i++;
 					}
 
 				}
@@ -622,8 +623,44 @@ namespace IceBot.Classes
 
 		}
 
+        public static string listAllSounds(int cat)
+        {
+            SortedList<string, int> sort = new SortedList<string, int>();
 
-		public static string[] listSoundCats()
+            int i = 0;
+            string res = "";
+
+
+            foreach (DataRow str in sqlSounds.Rows)
+            {
+                //Console.WriteLine("STR: {0} : {1}", str, g_soundList[str]);
+
+                if (str["snd_tags"].ToString().Contains(soundCats[cat]))
+                {
+                    if (str["snd_ignore"].ToString() != "1")
+                    {
+
+                        res = res + $"** {str["snd_aliases"].ToString()} **     -     ";
+                        i++;
+                    }
+
+                }
+
+            }
+
+            if (i == 0)
+            {
+                res = "No sounds in this category!";
+            }
+
+            //var res = sort.
+
+            return res.ToString();
+
+        }
+
+
+        public static string[] listSoundCats()
 		{
 			SortedList<string, int> sort = new SortedList<string, int>();
 
@@ -645,7 +682,31 @@ namespace IceBot.Classes
 			return res;
 		}
 
-		public static string[] listNewSounds()
+        public static string listAllSoundCats()
+        {
+            SortedList<string, int> sort = new SortedList<string, int>();
+
+            int i = 0;
+            string res = "";
+
+            foreach (string str in soundCats.Values)
+            {
+                res = res + $"**{str}**     -    ";
+                i += 1;
+            }
+
+            if (i == 0)
+            {
+                res = "No sound categories!";
+            }
+
+            
+            return res.ToString();
+        }
+
+
+
+        public static string[] listNewSounds()
 		{
 			SortedList<int, string> sort = new SortedList<int, string>();
 
@@ -795,7 +856,7 @@ namespace IceBot.Classes
 
 		}
 
-		public void AddSound(string alias, string cat)
+		public static void AddSound(string alias, string cat)
 		{
 
 			Dictionary<String, String> data = new Dictionary<String, String>();
@@ -815,9 +876,15 @@ namespace IceBot.Classes
 			data.Add("snd_dateadd", unixTime.ToString());
 			data.Add("snd_tags", tempCat + ";");
 
+            
+
 			try
 			{
+                Console.WriteLine("INSERTING INTO SQL");
+
 				sqlData.Insert("sounds", data);
+
+                Console.WriteLine("AFTER INSERTION");
 
 				DataTable getData;
 				getData = sqlData.GetDataTable("SELECT * FROM sounds;");

@@ -73,6 +73,7 @@ namespace IceBot.Classes.Discord
 
             discCmds.RegisterCommands<Commands>();
             discCmds.RegisterCommands<SoundCommands>();
+            discCmds.RegisterCommands<DownloadFuncs>();
             discCmds.RegisterCommands<ExampleExecutableGroup>();
             discCmds.RegisterCommands<ExampleGrouppedCommands>();
 

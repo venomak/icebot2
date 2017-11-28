@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
 using DSharpPlus.VoiceNext;
 using System;
 using System.Collections.Generic;
@@ -49,14 +50,14 @@ namespace IceBot.Classes.Discord
                         {
                             //Get sound view.
                             var soundView = 0;
-                            Console.WriteLine("HELLO 1");
+                            //Console.WriteLine("HELLO 1");
                             string[] catSounds = Classes.Sound.listSounds(srchCat[1], soundView);
-                            Console.WriteLine("HELLO 2");
+                            //Console.WriteLine("HELLO 2");
                             if (args.Count == 3)
                             {
-                                Console.WriteLine("HELLO 3");
+                               // Console.WriteLine("HELLO 3");
                                 ret = catSounds[0];
-                                Console.WriteLine("HELLO 4");
+                                //Console.WriteLine("HELLO 4");
                             }
                             else if (args.Count == 4)
                             {
@@ -133,6 +134,59 @@ namespace IceBot.Classes.Discord
             return ret;
         }
 
+
+        public static async Task newSoundListFunc(CommandContext context)
+        {
+            Dictionary<int, string> args = Global.HandleArgs(context.Message.Content);
+            Global.PrintDictTable(args);
+
+            if (args.Count == 2)
+            {
+                //List sound categories.
+                string soundCats = Classes.Sound.listAllSoundCats();
+
+                var inter = context.Client.GetInteractivityModule();
+
+                var soundPages = inter.GeneratePagesInEmbeds(soundCats);
+
+                
+                // send the paginator
+                await inter.SendPaginatedMessage(context.Channel, context.User, soundPages, TimeSpan.FromMinutes(1), TimeoutBehaviour.Delete);
+            }
+            else if (args.Count == 3) {
+                //List sounds in the category.
+                int[] srchCat = Classes.Sound.srchSoundCatsLoose(args[2]);
+
+
+                Console.WriteLine("SRCH CAT: {0} : {1}", srchCat[0], srchCat[1]);
+
+                if (srchCat[0] == 1)
+                {
+                    string catSounds = Classes.Sound.listAllSounds(srchCat[1]);
+
+                    var inter = context.Client.GetInteractivityModule();
+
+                    var soundPages = inter.GeneratePagesInStrings(catSounds);
+
+                    
+
+                    // send the paginator
+                    await inter.SendPaginatedMessage(context.Channel, context.User, soundPages, TimeSpan.FromMinutes(1), TimeoutBehaviour.Delete);
+                }
+                else
+                {
+                    
+
+                }
+            }
+            else
+            {
+                //Error.
+
+            }
+
+        }
+
         public static string soundSearchFunc(CommandContext context)
         {
             Dictionary<int, string> args = Global.HandleArgs(context.Message.Content);
@@ -186,7 +240,7 @@ namespace IceBot.Classes.Discord
             return ret;
         }
 
-        public static async Task soundPlayFunc(CommandContext context)
+        public static async Task soundPlayFunc(CommandContext context, bool shortcut = false)
         {
             var vnext = context.Client.GetVoiceNextClient();
 
@@ -203,11 +257,12 @@ namespace IceBot.Classes.Discord
 
                 Dictionary<int, string> args = Global.HandleArgs(context.Message.Content);
 
-                if (args.Count > 2)
+                if (shortcut == false)
                 {
                     args.Remove(0);
                     args.Remove(1);
-                } else
+                }
+                else
                 {
                     args.Remove(0);
                 }
@@ -391,8 +446,7 @@ namespace IceBot.Classes.Discord
 
             return ret;
         }
-
-
+        
 
 
     }
